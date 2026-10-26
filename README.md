@@ -214,6 +214,139 @@ month and for every site per month, and every cent is recorded and shown on the 
 
 </details>
 
+## Docker
+
+Run SEO Desk in Docker without installing Python on your host. The image uses a multi-stage build so build dependencies are not included in the final image.
+
+> **Terminal compatibility:** The multi-line examples use Bash syntax and work in Linux/macOS terminals and Git Bash on Windows, with the Windows-specific adjustments shown below. PowerShell and Command Prompt users may need different line-continuation and path syntax.
+
+### Build the image
+
+Run this from the repository root:
+
+```bash
+docker build -t seo-desk:local .
+```
+
+### Run a one-off audit
+
+Auditing a site requires no configuration or API keys:
+
+```bash
+docker run --rm seo-desk:local audit example.com
+```
+
+Save a **Markdown** report to your current directory on Linux or macOS:
+
+```bash
+docker run --rm \
+  -v "$PWD:/reports" \
+  seo-desk:local audit example.com \
+  --format markdown --output /reports/report.md
+```
+
+On Windows with Git Bash, MSYS may convert container paths such as `/reports/report.md` into Windows paths. Disable this conversion for the Docker command:
+
+```bash
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v "$(pwd -W):/reports" \
+  seo-desk:local audit example.com \
+  --format markdown --output /reports/report.md
+```
+
+Both commands save report.md in your current host directory.
+
+### Run the daily agent and dashboard
+
+Create a named volume to persist configuration, credentials, the SQLite database, and logs:
+
+```bash
+docker volume create seo-desk-data
+docker run --rm -v seo-desk-data:/data seo-desk:local init
+```
+
+The configuration files are stored in the `seo-desk-data` volume, not in your repository directory. To edit them on your host, copy them out of the volume, make your changes, and copy them back. Alternatively, bind-mount a local configuration directory to `/data` and manage the files directly on your host.
+
+Keep `.env` private because it may contain API keys and other credentials.
+
+For example, to copy the configuration directory out of the volume into a local folder, first create the destination directory and then copy the files:
+
+```bash
+mkdir -p seo-desk-config
+
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v seo-desk-data:/data \
+  -v "$(pwd -W)/seo-desk-config:/backup" \
+  --entrypoint sh \
+  seo-desk:local \
+  -c 'cp -a /data/. /backup/'
+```
+
+Set a dashboard password:
+
+```bash
+docker run --rm -it \
+  -v seo-desk-data:/data \
+  seo-desk:local password
+```
+
+Start the dashboard:
+
+```bash
+docker run -d \
+  --name seo-desk \
+  -p 127.0.0.1:5380:5380 \
+  -v seo-desk-data:/data \
+  seo-desk:local \
+  dashboard --host 0.0.0.0 --port 5380
+```
+
+If a container named `seo-desk` already exists, stop and remove it before starting another container with that name:
+
+```bash
+docker stop seo-desk
+docker rm seo-desk
+```
+
+These commands remove the existing container, not the named volume or its data.
+
+Open `http://127.0.0.1:5380` and sign in with the **password** you configured.
+
+The dashboard must bind to `0.0.0.0` **inside the container** for Docker port forwarding to work. The example publishes the port only on the host's loopback interface, so it is not directly exposed to your network. For remote access, use an HTTPS reverse proxy and keep authentication enabled.
+
+### Run checks and the daily job
+
+After configuring your sites and credentials, check your setup:
+
+```bash
+docker run --rm \
+  -v seo-desk-data:/data \
+  seo-desk:local check
+```
+
+Run the daily agent:
+
+```bash
+docker run --rm \
+  -v seo-desk-data:/data \
+  seo-desk:local run
+```
+
+Schedule the run command with your host's task scheduler or cron to run it daily. The database and configuration persist in the named volume even when individual containers are removed.
+
+### Stop the dashboard
+
+```bash
+docker stop seo-desk
+docker rm seo-desk
+```
+
+The seo-desk-data volume remains intact. To permanently remove it after confirming you no longer need its contents, run:
+
+```bash
+docker volume rm seo-desk-data
+```
+
 ## The dashboard
 
 <picture>
