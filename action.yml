@@ -1,5 +1,5 @@
 name: SEO Desk audit
-description: SEO, AEO and GEO audit of a live site. Checks AI crawler access, llms.txt and answer-ready pages, scores the site, and can fail under a threshold.
+description: "Audit a live site for SEO, AEO and GEO: AI crawler access, llms.txt, answer-ready pages. Fails the build under a score."
 author: Syed Anas
 branding:
   icon: search
