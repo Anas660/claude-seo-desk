@@ -42,6 +42,15 @@ project server; you can decline it, since it's meant for people who install the 
 - The terminal picture is a real run: `seodesk audit example.com > audit.txt`, then
   `python scripts/terminal_svg.py audit.txt "uvx seo-desk audit example.com" > docs/assets/audit.svg`.
 
+## Releasing (maintainers)
+
+1. Bump `__version__` in `seodesk/__init__.py`, the version in `.claude-plugin/plugin.json`, and add the changes to
+   `CHANGELOG.md`.
+2. Commit, then publish a GitHub release with the tag `v<version>`. The Release workflow checks the tag matches the
+   version and uploads the package to PyPI through trusted publishing.
+
+Everyone taking part is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).
+
 ## Reporting a bug
 
 Include the command you ran, what you expected, what happened, and `seodesk --version`. If a specific site behaves

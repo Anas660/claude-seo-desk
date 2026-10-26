@@ -356,7 +356,7 @@ python -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 Ideas that would help most: a Google Search Console connection, optional JavaScript rendering, more answer-engine
 checks, and a native Anthropic API client. See [CONTRIBUTING.md](https://github.com/Anas660/claude-seo-desk/blob/main/CONTRIBUTING.md); issues labelled
-`good first issue` are a good place to start.
+[`good first issue`](https://github.com/Anas660/claude-seo-desk/labels/good%20first%20issue) are a good place to start.
 
 <details>
 <summary>Project layout</summary>
@@ -376,6 +376,10 @@ checks, and a native Anthropic API client. See [CONTRIBUTING.md](https://github.
 | `skills/`, `.claude-plugin/` | The Claude Code plugin |
 
 </details>
+
+### Contributors
+
+<a href="https://github.com/Anas660/claude-seo-desk/graphs/contributors"><img src="https://contrib.rocks/image?repo=Anas660/claude-seo-desk" alt="Contributors to SEO Desk" /></a>
 
 If SEO Desk saved you an afternoon, a ⭐ helps other people find it.
 

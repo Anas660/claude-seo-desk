@@ -1,0 +1,29 @@
+name: Release
+
+# Publishing a GitHub release builds the package and uploads it to PyPI through trusted publishing: no API token is
+# stored anywhere. One-time setup on PyPI: seo-desk > Settings > Publishing > add a GitHub publisher with owner
+# Anas660, repository claude-seo-desk, workflow release.yml and environment pypi.
+on:
+  release:
+    types: [published]
+
+jobs:
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check the version matches the tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION=$(python -c "import seodesk; print(seodesk.__version__)")
+          test "v$VERSION" = "$TAG" || { echo "seodesk.__version__ is $VERSION but the release tag is $TAG"; exit 1; }
+      - run: pip install build && python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
