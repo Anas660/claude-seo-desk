@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 (2026-10-26)
+
+- The GitHub Action's description fits the Marketplace's 125-character limit, so the Action can be listed there.
+- Packaging: the license is declared as an SPDX expression, and each supported Python version is listed.
+- Dependabot, a release workflow that publishes to PyPI through trusted publishing, and a code of conduct.
+
 ## 0.1.0 (2026-10-26)
 
 First public release.

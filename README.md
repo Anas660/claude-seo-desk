@@ -84,7 +84,7 @@ shows up thin here, and that's worth knowing.
 | **Terminal** | `uvx seo-desk` or `pip install seo-desk` | `seodesk audit yoursite.com` |
 | **Claude Code plugin** | `/plugin marketplace add Anas660/claude-seo-desk` | "audit my site for AI search", and it fixes what it finds |
 | **MCP server** | `claude mcp add seo-desk -- uvx --python ">=3.10" --from "seo-desk[mcp]" seodesk mcp` | Claude, Cursor or any MCP client calls the tools |
-| **GitHub Action** | `uses: Anas660/claude-seo-desk@v0.1.0` | A score on every deploy, in the job summary |
+| **GitHub Action** | `uses: Anas660/claude-seo-desk@v0.1.1` | A score on every deploy, in the job summary |
 | **Daily agent** | `seodesk init` | History, trends, AI analyst, dashboard, many sites |
 
 ### Terminal
@@ -168,7 +168,7 @@ jobs:
   seo:
     runs-on: ubuntu-latest
     steps:
-      - uses: Anas660/claude-seo-desk@v0.1.0
+      - uses: Anas660/claude-seo-desk@v0.1.1
         with:
           url: https://www.example.com
           fail-under: 60          # optional: fail the job under this overall score
