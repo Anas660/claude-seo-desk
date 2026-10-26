@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "seo-desk"
 dynamic = ["version"]
 description = "Is your site ready for AI search? SEO, AEO and GEO audits from the CLI, CI, Claude Code or MCP: AI crawler access, llms.txt, answer-ready pages, AI visibility tracking, and an AI analyst that writes the to-do list."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Syed Anas" }]
 requires-python = ">=3.9"
 keywords = ["seo", "aeo", "geo", "generative-engine-optimization", "answer-engine-optimization", "llms-txt", "ai-crawlers",
@@ -18,7 +19,6 @@ classifiers = [
     "Environment :: Web Environment",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
