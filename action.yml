@@ -1,0 +1,81 @@
+name: SEO Desk audit
+description: SEO, AEO and GEO audit of a live site. Checks AI crawler access, llms.txt and answer-ready pages, scores the site, and can fail under a threshold.
+author: Syed Anas
+branding:
+  icon: search
+  color: blue
+
+inputs:
+  url:
+    description: The site to audit, e.g. https://www.example.com
+    required: true
+  max-pages:
+    description: Sitemap pages to crawl
+    default: "50"
+  fail-under:
+    description: Fail the step when the overall score (0-100) is lower than this. 0 never fails.
+    default: "0"
+  keywords:
+    description: Keywords to check Google ranks for, one per line. Needs SERPER_API_KEY in the step's env.
+    default: ""
+  ignore-robots:
+    description: Crawl pages robots.txt disallows for SEODesk ("true" only for a site you run)
+    default: "false"
+  python-version:
+    description: Python to run SEO Desk with
+    default: "3.12"
+
+outputs:
+  overall:
+    description: Overall score, 0-100
+    value: ${{ steps.audit.outputs.overall }}
+  seo:
+    description: SEO score, 0-100
+    value: ${{ steps.audit.outputs.seo }}
+  aeo:
+    description: AEO score, 0-100
+    value: ${{ steps.audit.outputs.aeo }}
+  geo:
+    description: GEO score, 0-100
+    value: ${{ steps.audit.outputs.geo }}
+  report:
+    description: Path of the full JSON report
+    value: ${{ steps.audit.outputs.report }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install SEO Desk
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: pip install --disable-pip-version-check --quiet "$ACTION_PATH"
+    - name: Audit
+      id: audit
+      shell: bash
+      env:
+        URL: ${{ inputs.url }}
+        MAX_PAGES: ${{ inputs.max-pages }}
+        FAIL_UNDER: ${{ inputs.fail-under }}
+        KEYWORDS: ${{ inputs.keywords }}
+        IGNORE_ROBOTS: ${{ inputs.ignore-robots }}
+      run: |
+        args=()
+        while IFS= read -r k; do
+          if [ -n "$k" ]; then args+=(--keyword "$k"); fi
+        done <<< "$KEYWORDS"
+        if [ "$IGNORE_ROBOTS" = "true" ]; then args+=(--ignore-robots); fi
+        set +e
+        seodesk audit "$URL" --max-pages "$MAX_PAGES" --fail-under "$FAIL_UNDER" \
+          --format markdown --output seodesk-report.md --json seodesk-report.json "${args[@]}"
+        code=$?
+        set -e
+        if [ -f seodesk-report.md ]; then cat seodesk-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+        if [ -f seodesk-report.json ]; then
+          python -c 'import json; r = json.load(open("seodesk-report.json")); print("\n".join("%s=%s" % (k, "" if v is None else v) for k, v in r["scores"].items()))' >> "$GITHUB_OUTPUT"
+          echo "report=seodesk-report.json" >> "$GITHUB_OUTPUT"
+        fi
+        exit $code

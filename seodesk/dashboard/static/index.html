@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>SEO Desk</title>
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg: #F5F7FB; --surface: #FFFFFF; --surface-2: #F3F6FA; --surface-3: #EAEFF6; --line: #E4E9F1; --line-2: #D3DBE6;
+    --ink: #0D1220; --ink-2: #3F4A5E; --ink-3: #6B7488;
+    --accent: #0A7A99; --accent-soft: #E2F4FA; --accent-ink: #075A71;
+    --brand: #2563EB; --brand-soft: #E8EFFE;
+    --good: #047857; --good-soft: #DFF5EC;
+    --maybe: #A15C07; --maybe-soft: #FDF1DC;
+    --skip: #64708A; --skip-soft: #EEF1F6;
+    --err: #D92D43; --err-soft: #FDECEE;
+    --violet: #6D5DF2; --violet-soft: #EEEBFE;
+    --on-badge: #FFFFFF;
+    --key: linear-gradient(100deg, #00B4D8 0%, #1E88E5 52%, #6D5DF2 100%);
+    --fill: linear-gradient(160deg, #22D3EE 0%, #2563EB 100%);
+    --hero: linear-gradient(135deg, #ECF8FD 0%, #EEF1FE 60%, #F4EEFE 100%);
+    --shadow: 0 1px 2px rgba(13,18,32,.04), 0 6px 20px -10px rgba(13,18,32,.14);
+    --radius: 16px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #080B12; --surface: #101725; --surface-2: #141D2E; --surface-3: #1A2539; --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.15);
+      --ink: #F3F5F9; --ink-2: #BAC2D0; --ink-3: #8390A5;
+      --accent: #5EE3FF; --accent-soft: rgba(0,212,255,.11); --accent-ink: #9BEEFF;
+      --brand: #7AA7FF; --brand-soft: rgba(122,167,255,.12);
+      --good: #34D399; --good-soft: rgba(52,211,153,.13);
+      --maybe: #FBBF24; --maybe-soft: rgba(251,191,36,.12);
+      --skip: #94A0B6; --skip-soft: rgba(148,160,182,.12);
+      --err: #FB7185; --err-soft: rgba(251,113,133,.12);
+      --violet: #A78BFA; --violet-soft: rgba(167,139,250,.14);
+      --on-badge: #0B1020;
+      --hero: linear-gradient(135deg, rgba(0,180,216,.12) 0%, rgba(37,99,235,.10) 60%, rgba(109,93,242,.12) 100%);
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #080B12; --surface: #101725; --surface-2: #141D2E; --surface-3: #1A2539; --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.15);
+    --ink: #F3F5F9; --ink-2: #BAC2D0; --ink-3: #8390A5;
+    --accent: #5EE3FF; --accent-soft: rgba(0,212,255,.11); --accent-ink: #9BEEFF;
+    --brand: #7AA7FF; --brand-soft: rgba(122,167,255,.12);
+    --good: #34D399; --good-soft: rgba(52,211,153,.13);
+    --maybe: #FBBF24; --maybe-soft: rgba(251,191,36,.12);
+    --skip: #94A0B6; --skip-soft: rgba(148,160,182,.12);
+    --err: #FB7185; --err-soft: rgba(251,113,133,.12);
+    --violet: #A78BFA; --violet-soft: rgba(167,139,250,.14);
+    --on-badge: #0B1020;
+    --hero: linear-gradient(135deg, rgba(0,180,216,.12) 0%, rgba(37,99,235,.10) 60%, rgba(109,93,242,.12) 100%);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  h1, h2, h3, .brand, .kpi b, .score b { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: -.015em; }
+  button, input, select { font: inherit; color: inherit; }
+  a { color: var(--accent); text-decoration: none; overflow-wrap: anywhere; }
+  a:hover { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .muted { color: var(--ink-3); }
+  .small { font-size: 13px; }
+
+  header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--surface) 86%, transparent); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1240px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 700; white-space: nowrap; }
+  .brand img { width: 30px; height: 30px; }
+  .brand span { background: var(--key); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 600; }
+  nav.tabs { display: flex; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); padding: 4px; border-radius: 14px; margin-left: 10px; overflow-x: auto; }
+  nav.tabs a { padding: 7px 13px; border-radius: 10px; color: var(--ink-2); font-weight: 600; white-space: nowrap; font-size: 14px; }
+  nav.tabs a:hover { text-decoration: none; color: var(--ink); }
+  nav.tabs a[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .grow { flex: 1; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line-2); background: var(--surface); padding: 8px 14px; border-radius: 11px; cursor: pointer; font-weight: 600; white-space: nowrap; line-height: 1.2; color: var(--ink); }
+  .btn:hover { border-color: var(--accent); text-decoration: none; }
+  .btn.primary { background: var(--fill); color: #fff; border: 0; }
+  .btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+  .btn.sm { padding: 5px 10px; font-size: 13px; border-radius: 9px; }
+  .btn:disabled { opacity: .55; cursor: default; }
+
+  main { max-width: 1240px; margin: 0 auto; padding: 24px 20px 80px; }
+  .intro h1 { margin: 0; font-size: 28px; line-height: 1.15; }
+  .intro p { margin: 6px 0 18px; color: var(--ink-2); max-width: 820px; }
+  .working { display: flex; align-items: center; gap: 10px; background: var(--accent-soft); color: var(--accent-ink); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-size: 14px; font-weight: 500; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); animation: pulse 1.2s infinite; flex: none; }
+  @keyframes pulse { 50% { opacity: .3; } }
+
+  .grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .kpi, .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .kpi { padding: 14px 16px; }
+  .kpi .lbl { font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 6px; }
+  .kpi b { display: block; font-size: 28px; line-height: 1.15; font-weight: 700; margin-top: 2px; }
+  .kpi .sub { font-size: 12.5px; color: var(--ink-3); overflow-wrap: anywhere; }
+  .delta { font-size: 12.5px; font-weight: 600; border-radius: 99px; padding: 1px 8px; white-space: nowrap; }
+  .delta.up { background: var(--good-soft); color: var(--good); }
+  .delta.down { background: var(--err-soft); color: var(--err); }
+  .delta.flat { background: var(--skip-soft); color: var(--skip); }
+  svg.spark { display: block; width: 100%; height: 34px; margin-top: 6px; }
+  svg.spark path.l { fill: none; stroke: var(--brand); stroke-width: 2; }
+  svg.spark path.a { fill: var(--brand-soft); stroke: none; }
+
+  .card { padding: 18px 20px; margin-bottom: 16px; }
+  .card h2 { margin: 0 0 4px; font-size: 19px; }
+  .card h3 { margin: 14px 0 6px; font-size: 15px; }
+  .card .lead { color: var(--ink-2); margin: 0 0 12px; font-size: 14px; }
+  .hero { background: var(--hero); }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
+  ul.tight { margin: 6px 0 0; padding-left: 20px; }
+  ul.tight li { margin: 3px 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-3); font-weight: 700; white-space: nowrap; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 99px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line); white-space: nowrap; }
+  .chip.SEO { background: var(--brand-soft); color: var(--brand); border-color: transparent; }
+  .chip.AEO { background: var(--violet-soft); color: var(--violet); border-color: transparent; }
+  .chip.GEO { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; }
+  .chip.Technical { background: var(--maybe-soft); color: var(--maybe); border-color: transparent; }
+  .chip.Content { background: var(--good-soft); color: var(--good); border-color: transparent; }
+  .chip.err { background: var(--err-soft); color: var(--err); border-color: transparent; }
+  .chip.warn { background: var(--maybe-soft); color: var(--maybe); border-color: transparent; }
+  .chip.ok { background: var(--good-soft); color: var(--good); border-color: transparent; }
+  .pos { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .pos.top3 { color: var(--good); } .pos.top10 { color: var(--brand); } .pos.none { color: var(--ink-3); font-weight: 500; }
+
+  .action { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; background: var(--surface); }
+  .action.dim { opacity: .6; }
+  .action .top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .action h4 { margin: 8px 0 4px; font-size: 16px; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .action p { margin: 4px 0; color: var(--ink-2); font-size: 14px; }
+  .action .how { background: var(--surface-2); border-radius: 10px; padding: 8px 11px; font-size: 13.5px; white-space: pre-wrap; }
+  .action .foot { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 3px; gap: 2px; margin-bottom: 14px; }
+  .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 9px; cursor: pointer; color: var(--ink-2); font-weight: 600; font-size: 14px; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+  .bars { display: flex; flex-direction: column; gap: 8px; }
+  .barrow { display: grid; grid-template-columns: 170px 1fr 48px; gap: 10px; align-items: center; font-size: 13.5px; }
+  .meter { height: 8px; border-radius: 99px; background: var(--surface-3); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: 99px; background: var(--brand); }
+  svg.chart { width: 100%; height: 180px; display: block; }
+  svg.chart .b { fill: var(--brand-soft); } svg.chart .c { fill: none; stroke: var(--good); stroke-width: 2.2; }
+  svg.chart text { fill: var(--ink-3); font-size: 10px; }
+  svg.lines { width: 100%; height: 220px; display: block; }
+  svg.lines line.g { stroke: var(--line); stroke-width: 1; }
+  svg.lines text { fill: var(--ink-3); font-size: 10px; }
+  svg.lines path { fill: none; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+  svg.lines .seo, .key i.seo { stroke: var(--brand); background: var(--brand); }
+  svg.lines .aeo, .key i.aeo { stroke: var(--violet); background: var(--violet); }
+  svg.lines .geo, .key i.geo { stroke: var(--accent); background: var(--accent); }
+  svg.lines .overall { stroke: var(--ink-3); stroke-dasharray: 4 4; stroke-width: 1.6; }
+  .key i.overall { background: var(--ink-3); }
+  .key { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .key span { display: inline-flex; align-items: center; gap: 6px; }
+  .key i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+  .verdict { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; margin: 2px 0; font-size: 15px; }
+  .verdict b { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .sitepick { border: 1px solid var(--line-2); background: var(--surface); border-radius: 11px; padding: 7px 10px; font-weight: 600; max-width: 190px; }
+  tr.site-row { cursor: pointer; } tr.site-row:hover td { background: var(--surface-2); }
+  td .sub { display: block; font-size: 12px; color: var(--ink-3); }
+  .score-cell { font-weight: 700; font-variant-numeric: tabular-nums; }
+  pre.log { background: var(--surface-2); border-radius: 12px; padding: 12px; font-size: 12.5px; max-height: 360px; overflow: auto; white-space: pre-wrap; }
+  details summary { cursor: pointer; color: var(--accent); font-size: 13px; }
+  .empty { text-align: center; color: var(--ink-3); padding: 40px 20px; border: 1px dashed var(--line-2); border-radius: var(--radius); }
+  @media (max-width: 960px) { .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid2 { grid-template-columns: minmax(0, 1fr); } .barrow { grid-template-columns: 120px 1fr 44px; } }
+  @media (max-width: 640px) { .sitepick { max-width: 140px; } .bar { flex-wrap: wrap; padding: 8px 14px; } nav.tabs { order: 3; width: 100%; margin-left: 0; } main { padding: 18px 14px 60px; } .intro h1 { font-size: 23px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand"><img src="/assets/logo.svg" alt=""> SEO <span>Desk</span></div>
+    <select class="sitepick" id="sitePick" aria-label="Site"></select>
+    <nav class="tabs" id="tabs">
+      <a href="#all">All sites</a><a href="#today">Today</a><a href="#progress">Progress</a><a href="#search">Search</a><a href="#ai">AI answers</a><a href="#stores" id="storesTab">Stores</a><a href="#site">Site health</a><a href="#actions">Actions</a><a href="#runs">Runs</a>
+    </nav>
+    <div class="grow"></div>
+    <button class="btn primary" id="runBtn" type="button">Run now</button>
+    <a class="btn ghost" href="/logout">Sign out</a>
+  </div>
+</header>
+<main id="app"><p class="muted">Loading…</p></main>
+<script>
+(() => {
+  const app = document.getElementById('app');
+  let S = null, PAGES = null, ACTIONS = null, OVERVIEW = null, actionFilter = 'open', pageFilter = 'issues', poll = null;
+  const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+  let SITE = new URLSearchParams(location.search).get('site') || store.get('seoDeskSite') || '';
+  const withSite = (p) => SITE ? p + (p.includes('?') ? '&' : '?') + 'site=' + encodeURIComponent(SITE) : p;
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const num = (n) => (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString('en-US');
+  const when = (iso) => { if (!iso) return '—'; const d = new Date(iso.length === 10 ? iso + 'T00:00:00Z' : iso); return isNaN(d) ? esc(iso) : d.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
+  const day = (iso) => { if (!iso) return '—'; const d = new Date(iso.length === 10 ? iso + 'T00:00:00Z' : iso); return isNaN(d) ? esc(iso) : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); };
+  const path = (u) => { try { const x = new URL(u); return x.pathname + x.search; } catch { return u || ''; } };
+  const link = (u, label) => u ? `<a href="${esc(u.startsWith('/') ? S.site + u : u)}" target="_blank" rel="noopener">${esc(label || path(u) || u)}</a>` : '<span class="muted">—</span>';
+
+  async function api(p, body) {
+    const opt = body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'dashboard' }, body: JSON.stringify({ site: SITE, ...body }) };
+    const r = await fetch(body === undefined && !p.startsWith('/api/overview') && !p.startsWith('/api/log') ? withSite(p) : p, opt);
+    if (r.status === 401) { location.href = '/login'; throw new Error('signed out'); }
+    return r.json();
+  }
+
+  function spark(values) {
+    const v = values.filter((x) => x !== null && x !== undefined);
+    if (v.length < 2) return '';
+    const w = 200, h = 34, min = Math.min(...v), max = Math.max(...v), span = (max - min) || 1;
+    const pts = v.map((x, i) => [i * (w / (v.length - 1)), h - 3 - ((x - min) / span) * (h - 6)]);
+    const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path class="a" d="${d} L ${w} ${h} L 0 ${h} Z"/><path class="l" d="${d}"/></svg>`;
+  }
+
+  // A change already worked out: green when it's better, red when worse, grey when under `flat`.
+  function chg(c, { invert = false, flat = 1, suffix = '' } = {}) {
+    if (c === null || c === undefined) return '<span class="muted small">—</span>';
+    if (Math.abs(c) < flat) return `<span class="delta flat">${c > 0 ? '+' : ''}${c}${suffix}</span>`;
+    const good = invert ? c < 0 : c > 0;
+    return `<span class="delta ${good ? 'up' : 'down'}">${c > 0 ? '+' : ''}${c}${suffix}</span>`;
+  }
+
+  function lineChart(series) {
+    if (!series || series.length < 2) return '<p class="muted small">The chart starts once there are two days of scores.</p>';
+    const w = 640, h = 220, l = 30, r = 10, t = 10, b = 24, n = series.length;
+    const x = (i) => l + i * (w - l - r) / (n - 1), y = (v) => t + (100 - v) / 100 * (h - t - b);
+    let out = [0, 25, 50, 75, 100].map((v) => `<line class="g" x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}"/><text x="${l - 6}" y="${y(v) + 3}" text-anchor="end">${v}</text>`).join('');
+    for (const k of ['overall', 'geo', 'aeo', 'seo']) {
+      let d = '', pen = 'M';
+      series.forEach((p, i) => { if (p[k] === null || p[k] === undefined) { pen = 'M'; return; } d += `${pen}${x(i).toFixed(1)} ${y(p[k]).toFixed(1)} `; pen = 'L'; });
+      out += `<path class="${k}" d="${d}"><title>${k.toUpperCase()}</title></path>`;
+    }
+    const ticks = [0, Math.floor((n - 1) / 2), n - 1].filter((v, i, a) => a.indexOf(v) === i);
+    out += ticks.map((i) => `<text x="${x(i)}" y="${h - 6}" text-anchor="${i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}">${esc(day(series[i].date))}</text>`).join('');
+    return `<svg class="lines" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Daily SEO, AEO and GEO scores">${out}</svg>
+      <div class="key"><span><i class="seo"></i>SEO</span><span><i class="aeo"></i>AEO</span><span><i class="geo"></i>GEO</span><span><i class="overall"></i>Overall</span></div>`;
+  }
+
+  function posCell(p) {
+    if (p === null || p === undefined) return '<span class="pos none">not top 20</span>';
+    return `<span class="pos ${p <= 3 ? 'top3' : p <= 10 ? 'top10' : ''}">#${p}</span>`;
+  }
+
+  // ── views ──────────────────────────────────────────────────────────────
+  function viewToday() {
+    const P = S.progress || {}, last = P.latest || {}, wk = P.week || {};
+    const cr = S.crawl || {}, b = S.brief, rk = S.ranked, vs = (S.visibility || {}).summary;
+    const ranked = (S.ranks || []).filter((r) => r.position !== null && r.position !== undefined);
+    const score = (k, label, sub) => `<div class="kpi"><div class="lbl">${label} ${chg((wk[k] || {}).change)}</div><b>${num(last[k])}</b><div class="sub">${sub}</div>${spark((P.series || []).map((x) => x[k]))}</div>`;
+    const actions = (S.brief && S.brief.actions) || [];
+    const second = `
+        <div class="kpi"><div class="lbl">Keywords in Google's top 10</div><b>${ranked.filter((r) => r.position <= 10).length}<span class="muted" style="font-size:16px"> / ${(S.ranks || []).length}</span></b><div class="sub">${(S.ranks || []).length ? 'from the daily rank checks' : 'rank checks need SERPER_API_KEY and keywords'}</div></div>
+        <div class="kpi"><div class="lbl">Google ranks the site for</div><b>${rk ? num(rk.total) : '—'}</b><div class="sub">${rk ? `keywords · ${num(rk.top10)} in the top 10 · DataForSEO ${day(rk._at)}` : (S.dataforseo ? 'DataForSEO numbers arrive with the next run' : 'Add DataForSEO to see this (see README)')}</div></div>
+        ${vs ? `<div class="kpi"><div class="lbl">AI answers naming the site</div><b>${num(vs.mentions)}<span class="muted" style="font-size:16px"> / ${num(vs.prompts)}</span></b><div class="sub">unbranded prompts · <a href="#ai">see the answers</a></div></div>`
+          : `<div class="kpi"><div class="lbl">Estimated clicks a month</div><b>${rk ? num(rk.etv) : '—'}</b><div class="sub">${rk ? 'DataForSEO estimate from positions and volumes' : 'Add DataForSEO to see this'}</div></div>`}`;
+    return `
+      <div class="intro"><h1>${esc(b ? b.headline : 'No brief yet')}</h1>
+        <p>${b ? esc(b.summary) : `The first daily run for ${esc(S.name)} writes a brief here. Press “Run now” to start one.`}</p></div>
+      ${P.latest ? `<p class="small" style="margin:-8px 0 14px"><b>This week vs last week:</b> ${esc(wk.verdict)} <a href="#progress">See progress</a></p>` : ''}
+      <div class="grid4">
+        ${score('overall', 'Overall', `Mean of the three · change vs last week ${last.date ? '· ' + day(last.date) : ''}`)}
+        ${score('seo', 'SEO', 'Keyword visibility, errors, on-page')}
+        ${score('aeo', 'AEO', 'Questions, answer-first, FAQ schema')}
+        ${score('geo', 'GEO', 'AI crawlers, llms.txt, schema, claims' + (S.has_visibility ? ', AI mentions' : ''))}
+      </div>
+      <div class="grid4">
+        ${second}
+        <div class="kpi"><div class="lbl">Keywords in Google's top 20</div><b>${ranked.length}<span class="muted" style="font-size:16px"> / ${(S.ranks || []).length}</span></b><div class="sub">site health ${num(cr.health)}% · ${num(cr.errors)} error${cr.errors === 1 ? '' : 's'}</div></div>
+      </div>
+      ${storesAttention()}
+      ${b ? `<div class="grid2">
+        <div class="card"><h2>Better</h2>${list(b.wins)}</div>
+        <div class="card"><h2>Worse or broken</h2>${list(b.risks)}</div></div>` : ''}
+      <div class="card"><h2>Today's actions</h2><p class="lead">From the latest brief, most valuable first. Mark them done or dismiss them; the agent sees what's still open tomorrow.</p>
+        ${actions.length ? actionCards(matchActions(actions)) : '<p class="muted">No actions yet.</p>'}</div>
+      ${b && b.content_ideas && b.content_ideas.length ? `<div class="card"><h2>Pages worth writing</h2>${b.content_ideas.map((i) => `
+        <h3>${esc(i.keyword)} <span class="chip">${esc(i.page_type)}</span></h3><p class="lead">${esc(i.angle)}</p>${list(i.questions)}`).join('')}</div>` : ''}
+      <p class="muted small">${b ? `Brief by ${esc(b.model)} · ${when(b.created_at)} · $${Number(b.cost_usd).toFixed(3)} · ` : `Briefs by ${esc(S.model)} · `}crawl ${when(S.crawl_at)}</p>`;
+  }
+
+  function periodTable(rows, label, fmt) {
+    if (!rows || !rows.length) return '<p class="muted small">No scores yet.</p>';
+    const m = (S.progress || {}).metrics || {};
+    const cols = ['top10', 'avg_position', 'errors'].concat(S.has_visibility ? ['ai_mentions'] : []).concat(rows.some((r) => r.metrics.ranked_total !== null) ? ['ranked_total', 'etv'] : []);
+    const cell = (r, k) => `<td class="num"><span class="score-cell">${num(r[k])}</span><span class="sub">${r.change ? chg(r.change[k]) : ''}</span></td>`;
+    const mcell = (r, k) => `<td class="num">${num(r.metrics[k])}<span class="sub">${r.metric_change ? chg(r.metric_change[k], { invert: (m[k] || {}).lower, flat: 0.05 }) : ''}</span></td>`;
+    return `<div class="scroll"><table><thead><tr><th>${label}</th><th class="num">Days</th><th class="num">SEO</th><th class="num">AEO</th><th class="num">GEO</th><th class="num">Overall</th>
+      ${cols.map((k) => `<th class="num" title="${esc((m[k] || {}).label)}">${esc(shortMetric[k] || k)}</th>`).join('')}</tr></thead><tbody>
+      ${rows.slice().reverse().map((r) => `<tr><td>${esc(fmt(r))}</td><td class="num">${r.days}</td>${['seo', 'aeo', 'geo', 'overall'].map((k) => cell(r, k)).join('')}${cols.map((k) => mcell(r, k)).join('')}</tr>`).join('')}
+      </tbody></table></div>`;
+  }
+  const shortMetric = { top10: 'Top 10', avg_position: 'Avg pos.', errors: 'Errors', ai_mentions: 'AI mentions', ranked_total: 'Ranked kw', etv: 'Est. clicks' };
+  const monthName = (p) => new Date(p.period + '-01T00:00:00Z').toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+  function viewProgress() {
+    const P = S.progress || {}, last = P.latest;
+    if (!last) return `<div class="intro"><h1>Progress</h1><p>No scores for ${esc(S.name)} yet. Each daily run scores the site; the comparisons fill in from the second week.</p></div>`;
+    const wk = P.week, mo = P.month, parts = last.parts || {};
+    const card = (k, label) => `<div class="kpi"><div class="lbl">${label}<span class="muted">${day(last.date)}</span></div><b>${num(last[k])}</b>
+      <div class="sub">This week ${num(wk[k].now)} ${chg(wk[k].change)} vs last week ${num(wk[k].before)}</div>
+      <div class="sub">This month ${num(mo[k].now)} ${chg(mo[k].change)} vs last month ${num(mo[k].before)}</div></div>`;
+    const bar = (label, v, weight) => `<div class="barrow"><span>${label} <span class="muted">${weight}</span></span><div class="meter"><i style="width:${Math.max(0, Math.min(100, v || 0))}%"></i></div><span class="num">${v === null || v === undefined ? '—' : num(Math.round(v))}</span></div>`;
+    const g = parts.geo || {}, se = parts.seo || {}, ae = parts.aeo || {};
+    return `
+      <div class="intro"><h1>Progress: ${esc(S.name)}</h1>
+        <div class="verdict"><b>Week:</b> ${esc(wk.verdict)}</div>
+        <div class="verdict"><b>Month:</b> ${esc(mo.verdict)}</div>
+        <p class="small">Each score is 0–100 and worked out the same way every day on every site. A week is Monday to Sunday and a month is the calendar month, each the average of its days; the change is against the one before. ${P.days} days of scores so far.</p></div>
+      <div class="grid4">${card('seo', 'SEO')}${card('aeo', 'AEO')}${card('geo', 'GEO')}${card('overall', 'Overall')}</div>
+      <div class="card"><h2>Scores by day</h2>${lineChart(P.series)}</div>
+      <div class="card"><h2>Week by week</h2><p class="lead">Newest first. Under each number, the change on the week before: green is better (for average position and errors, lower is better).</p>${periodTable(P.weeks, 'Week of', (r) => day(r.period))}</div>
+      <div class="card"><h2>Month by month</h2>${periodTable(P.months, 'Month', monthName)}</div>
+      <div class="grid2">
+        <div class="card"><h2>What makes today's scores</h2><p class="lead">Each part 0–100, with its weight.</p>
+          <h3>SEO ${num(last.seo)}</h3><div class="bars">${bar('Keyword visibility', se.visibility, '50%')}${bar('Pages without errors', se.technical, '30%')}${bar('Clean on-page tags', se.on_page, '20%')}</div>
+          <h3>AEO ${num(last.aeo)}</h3><div class="bars">${bar('Question headings', ae.questions, '30%')}${bar('Answer-first paragraph', ae.answers, '30%')}${bar('FAQPage schema', ae.faq, '20%')}${bar('Tables or lists', ae.structure, '20%')}</div>
+          <h3>GEO ${num(last.geo)}</h3><div class="bars">${bar('AI crawlers allowed', g.crawlers, '25%')}${bar('llms.txt files', g.llms, '15%')}${bar('Structured data', g.schema, '20%')}${g.claims !== null && g.claims !== undefined ? bar('No false claims', g.claims, '15%') : ''}${g.mentions !== null && g.mentions !== undefined ? bar('AI models name the site', g.mentions, '25%') : ''}</div>
+          <p class="muted small">A part with no data that day is left out and the others count for more.</p></div>
+        <div class="card"><h2>How to read it</h2><ul class="tight small">
+          <li><b>SEO</b>: keyword visibility gives points by Google position (#1 100, #2 90, #3 80, #4–5 65, #6–10 50, #11–15 25, #16–20 15), averaged over the keyword plan; plus pages without crawl errors and pages with clean title, description, canonical, H1 and alt text.</li>
+          <li><b>AEO</b>: share of content pages built to be quoted: question headings, a 25–90 word answer straight under one, FAQPage schema, tables or lists.</li>
+          <li><b>GEO</b>: AI crawlers allowed in robots.txt, llms.txt and llms-full.txt, structured data on pages${S.has_claims ? ', no false claims on the site' : ''}${S.has_visibility ? ', and how often AI models name the site in unbranded answers (25% of answers or more scores 100)' : ''}.</li>
+          <li>A move of under 1 point counts as flat. New keywords in the plan lower visibility until they rank.</li></ul></div>
+      </div>`;
+  }
+
+  function viewAll() {
+    const O = OVERVIEW || { sites: [] };
+    const cell = (r, k) => `<td class="num"><span class="score-cell">${num(r.scores[k])}</span><span class="sub">${chg(((r.week || {})[k] || {}).change)} wk · ${chg(((r.month || {})[k] || {}).change)} mo</span></td>`;
+    const status = (run) => run ? `<span class="chip ${run.status === 'ok' ? 'ok' : run.status === 'partial' ? 'warn' : run.status === 'running' ? '' : 'err'}">${esc(run.status)}</span> <span class="muted small">${when(run.started_at)}</span>` : '<span class="muted small">never run</span>';
+    return `<div class="intro"><h1>All sites</h1><p>Today's SEO, AEO and GEO score for each site, with the change against last week (wk) and last month (mo). Click a site to open its progress. Spend this month, every site: <b>$${Number(O.total_spend || 0).toFixed(2)}</b> of $${Number(O.total_cap || 0).toFixed(2)}.</p></div>
+      <div class="card"><div class="scroll"><table><thead><tr><th>Site</th><th class="num">SEO</th><th class="num">AEO</th><th class="num">GEO</th><th class="num">Overall</th><th style="min-width:110px">Last 30 days</th><th class="num">Top 10</th><th>Last run</th></tr></thead><tbody>
+      ${O.sites.map((r) => `<tr class="site-row" data-site="${esc(r.slug)}"><td><b>${esc(r.name)}</b><span class="sub">${esc(r.site.replace(/^https?:\/\//, ''))}</span></td>
+        ${['seo', 'aeo', 'geo', 'overall'].map((k) => cell(r, k)).join('')}<td>${spark(r.series.map((x) => x.overall))}</td>
+        <td class="num">${r.metrics.top10 === undefined || r.metrics.top10 === null ? '—' : `${num(r.metrics.top10)}<span class="muted"> / ${num(r.metrics.keywords)}</span>`}</td><td>${status(r.run)}</td></tr>`).join('') || '<tr><td colspan="8" class="muted">No sites.</td></tr>'}
+      </tbody></table></div></div>`;
+  }
+
+  const list = (items) => (items && items.length) ? `<ul class="tight">${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p class="muted small">Nothing.</p>';
+
+  function matchActions(briefActions) {
+    // The brief's actions, with the queue row (id, status) when it has one.
+    const rows = ACTIONS || [];
+    return briefActions.map((a) => rows.find((r) => r.title === a.title && (r.url || '') === (a.url || '')) || a);
+  }
+
+  function actionCards(items) {
+    return items.map((a) => `
+      <div class="action ${a.status && a.status !== 'open' ? 'dim' : ''}">
+        <div class="top"><span class="chip ${esc(a.area)}">${esc(a.area)}</span><span class="chip">P${esc(a.priority)}</span>${a.effort ? `<span class="chip">effort ${esc(a.effort)}</span>` : ''}${a.keyword ? `<span class="chip">“${esc(a.keyword)}”</span>` : ''}${a.status && a.status !== 'open' ? `<span class="chip ok">${esc(a.status)}</span>` : ''}</div>
+        <h4>${esc(a.title)}</h4>
+        <p>${esc(a.why)}</p>
+        ${a.how ? `<div class="how">${esc(a.how)}</div>` : ''}
+        <div class="foot">${a.url ? link(a.url) : ''}${a.evidence ? `<span class="muted small">${esc(a.evidence)}</span>` : ''}<span class="grow"></span>
+          ${a.id ? (a.status === 'open' ? `<button class="btn sm" data-act="${a.id}" data-st="done" type="button">Done</button><button class="btn sm ghost" data-act="${a.id}" data-st="dismissed" type="button">Dismiss</button>` : `<button class="btn sm ghost" data-act="${a.id}" data-st="open" type="button">Reopen</button>`) : ''}
+          ${a.first_seen ? `<span class="muted small">since ${day(a.first_seen)}${a.seen_count > 1 ? ' · suggested ' + a.seen_count + '×' : ''}</span>` : ''}</div>
+      </div>`).join('');
+  }
+
+  function viewSearch() {
+    const ranks = S.ranks || [];
+    const tierOrder = { easy: 0, medium: 1, head: 2 };
+    ranks.sort((a, b) => (tierOrder[a.tier] ?? 3) - (tierOrder[b.tier] ?? 3));
+    return `
+      <div class="intro"><h1>Search</h1><p>Google positions for ${esc(S.name)}'s keyword plan, checked every run through Serper.${S.volumes_at ? ` Search volumes from DataForSEO, ${day(S.volumes_at)}.` : ''}</p></div>
+      <div class="card"><h2>Keyword plan</h2><p class="lead">Easy keywords first: their first page is small sites, so a good page can rank in weeks. Head terms are the long-term goal.</p>
+        <div class="scroll"><table><thead><tr><th>Tier</th><th>Keyword</th><th>Volume</th><th class="num">Today</th><th class="num">7 days ago</th><th>Ranking page</th><th>Target</th><th>First page</th></tr></thead><tbody>
+        ${ranks.map((r) => `<tr><td><span class="chip">${esc(r.tier)}</span></td><td>${esc(r.keyword)} <span class="muted small">${esc(r.country.toUpperCase())}</span>
+          ${r.questions && r.questions.length ? `<details><summary>People also ask (${r.questions.length})</summary>${list(r.questions)}</details>` : ''}</td>
+          <td class="small">${r.search_volume !== null && r.search_volume !== undefined ? `<b>${num(r.search_volume)}</b>/mo` : esc(cfgVolume(r))}</td><td class="num">${posCell(r.position)}</td><td class="num">${posCell(r.position_7d)}</td>
+          <td class="small">${r.url ? link(r.url) : '—'}</td><td class="small">${r.target ? esc(r.target) : '<span class="chip warn">no page yet</span>'}</td>
+          <td class="small muted">${esc((r.top || []).slice(0, 4).join(', '))}</td></tr>`).join('') || '<tr><td colspan="8" class="muted">No rank checks yet (they need SERPER_API_KEY and keywords in the site file).</td></tr>'}
+        </tbody></table></div></div>
+      ${rankedCard()}`;
+  }
+
+  const cfgVolume = (r) => r.volume || '';
+  function rankedCard() {
+    const rk = S.ranked;
+    if (!rk) return `<div class="card"><h2>Keywords Google ranks the site for</h2><p class="muted small">${S.dataforseo ? 'DataForSEO checks this weekly; the first numbers arrive with the next run.' : 'Comes from DataForSEO once DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD are in .env.'}</p></div>`;
+    return `<div class="card"><h2>Keywords Google ranks the site for</h2><p class="lead">DataForSEO Labs, ${esc((rk.country || '').toUpperCase())}, ${day(rk._at)}: <b>${num(rk.total)}</b> keywords, ${num(rk.top3)} in the top 3, ${num(rk.top10)} in the top 10, about ${num(rk.etv)} clicks a month. Since the last check: ${num(rk.new)} new, ${num(rk.up)} up, ${num(rk.down)} down, ${num(rk.lost)} lost.</p>
+      <div class="scroll"><table><thead><tr><th>Keyword</th><th class="num">Volume</th><th class="num">Position</th><th>Page</th></tr></thead><tbody>
+      ${(rk.items || []).slice(0, 40).map((i) => `<tr><td>${esc(i.keyword)}</td><td class="num">${num(i.volume)}</td><td class="num">${posCell(i.position)}</td><td class="small">${link(i.url)}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">None yet.</td></tr>'}
+      </tbody></table></div></div>`;
+  }
+  function viewAI() {
+    const g = S.geo || {}, gs = g.summary || {}, V = S.visibility, vs = (V || {}).summary || {};
+    const yes = (v) => v ? '<span class="chip ok">yes</span>' : '<span class="chip">no</span>';
+    const answers = !S.has_visibility
+      ? `<div class="card"><h2>What AI models say</h2><p class="lead">Add <code>ai_visibility</code> to this site's file (the questions your customers ask, and the models to ask) to see whether ChatGPT, Perplexity, Gemini and Claude name ${esc(S.name)}, link to it, and which sites they cite instead. See sites/example.yaml.</p></div>`
+      : !V ? '<div class="card"><h2>What AI models say</h2><p class="muted">The first answers arrive with the next run (it needs LLM_API_KEY).</p></div>'
+      : `<div class="grid4">
+          <div class="kpi"><div class="lbl">Unbranded answers naming the site</div><b>${num(vs.mentions)}<span class="muted" style="font-size:16px"> / ${num(vs.prompts)}</span></b><div class="sub">asked ${day(V._at)}</div></div>
+          <div class="kpi"><div class="lbl">…that link to it</div><b>${num(vs.cited)}</b><div class="sub">the site as a cited source</div></div>
+          <div class="kpi"><div class="lbl">Answers with a false claim</div><b>${num(vs.flagged)}</b><div class="sub">${S.has_claims ? 'from the site file’s claims list' : 'add claims to the site file to check'}</div></div>
+          <div class="kpi"><div class="lbl">Cited most instead</div><b style="font-size:18px">${esc(((vs.top_cited || [])[0] || {}).domain || '—')}</b><div class="sub">${esc((vs.top_cited || []).slice(1, 4).map((c) => c.domain).join(', '))}</div></div>
+        </div>
+        <div class="card"><h2>By model</h2><div class="scroll"><table><thead><tr><th>Model</th><th class="num">Unbranded answers</th><th class="num">Named the site</th><th class="num">Linked to it</th><th class="num">False claims</th></tr></thead><tbody>
+          ${Object.entries(vs.by_model || {}).map(([m, x]) => `<tr><td>${esc(m)}</td><td class="num">${num(x.unbranded)}</td><td class="num">${num(x.mentions)}</td><td class="num">${num(x.cited)}</td><td class="num">${num(x.flagged)}</td></tr>`).join('')}
+        </tbody></table></div></div>
+        <div class="card"><h2>Answers</h2><p class="lead">Each prompt went to the model as a user would type it. Branded prompts name the site, so they don't count toward the mention rate; they're there to catch false claims.</p>
+          <div class="scroll"><table><thead><tr><th>Prompt</th><th>Model</th><th>Names it</th><th>Links</th><th>Cites</th><th>Answer</th></tr></thead><tbody>
+          ${(V.results || []).map((r) => `<tr><td>${esc(r.prompt)}${r.branded ? ' <span class="chip">branded</span>' : ''}${(r.flags || []).map((f) => ` <span class="chip err">${esc(f)}</span>`).join('')}</td><td class="small">${esc(r.model)}</td><td>${yes(r.mentioned)}</td><td>${yes(r.cited)}</td>
+            <td class="small muted">${esc((r.citations || []).slice(0, 4).join(', '))}</td><td class="small"><details><summary>${esc(r.excerpt.slice(0, 70))}…</summary>${esc(r.excerpt)}</details></td></tr>`).join('') || '<tr><td colspan="6" class="muted">No answers.</td></tr>'}
+          </tbody></table></div></div>
+        ${(V.errors || []).length ? `<div class="card"><h2>Probe errors</h2>${list(V.errors)}</div>` : ''}`;
+    return `
+      <div class="intro"><h1>AI answers</h1><p>What AI models answer when asked what ${esc(S.name)}'s customers ask, whether the AI crawlers can read the site${S.has_claims ? ', and claims the site must never make' : ''}.</p></div>
+      ${answers}
+      <div class="card"><h2>Crawlers and llms.txt</h2>
+        ${(g.crawlers || []).map((c) => `<span class="chip ${c.home ? 'ok' : 'err'}">${esc(c.crawler)}</span>`).join(' ')}
+        <table style="margin-top:12px"><tbody>${(g.llms || []).map((f) => `<tr><td>${esc(f.path)}</td><td>${f.status === 200 ? '<span class="chip ok">200</span>' : `<span class="chip err">${esc(f.status)}</span>`}</td><td class="num">${num(Math.round((f.bytes || 0) / 1024))} KB</td></tr>`).join('')}</tbody></table></div>
+      ${S.has_claims ? `<div class="card"><h2>False claims on live pages</h2><p class="lead">Phrases the site's claims list rules out, found in today's crawl (blog posts included) and the llms files. AI models repeat these.</p>
+        ${(g.claims || []).length ? `<div class="scroll"><table><thead><tr><th>Claim</th><th>Page</th><th>Context</th></tr></thead><tbody>${g.claims.map((c) => `<tr><td><span class="chip err">${esc(c.id)}</span><div class="muted small">${esc(c.why)}</div></td><td class="small">${link(c.url)}</td><td class="small">…${esc(c.context)}…</td></tr>`).join('')}</tbody></table></div>` : `<p><span class="chip ok">none found</span> ${gs.claim_hits === undefined ? '<span class="muted small">(no crawl yet)</span>' : ''}</p>`}</div>` : ''}`;
+  }
+
+  function storesAttention() {
+    const att = ((S.stores || {}).summary || {}).attention || [];
+    return att.length ? `<div class="card"><h2>Store listings need attention</h2>${list(att)}<p class="muted small"><a href="#stores">Open the Stores tab</a></p></div>` : '';
+  }
+
+  function viewStores() {
+    const st = S.stores || {}, wp = st.wordpress, sh = st.shopify, sm = st.summary || {};
+    if (!wp && !sh) return `<div class="intro"><h1>Store listings</h1><p>No store check yet: the next run adds the listings in the site file's <code>stores</code>.</p></div>`;
+    const tr = S.stores_trend || [];
+    const ser = (k) => tr.map(([, s]) => s[k]);
+    const pos = (p) => (p === null || p === undefined) ? '<span class="muted">—</span>' : `<b>${num(p)}</b>`;
+    return `
+      <div class="intro"><h1>Store listings</h1><p>The site's WordPress.org plugin and Shopify App Store app. Each store ranks its own search mostly on installs, reviews and the listing's name, so this is where reviews and listing copy show up. Checked every run.</p></div>
+      ${storesAttention()}
+      <div class="grid4">
+        <div class="kpi"><div class="lbl">WordPress.org active installs</div><b>${wp ? (wp.active_installs ? num(wp.active_installs) + '+' : '&lt;10') : '—'}</b><div class="sub">${wp ? `v${esc(wp.version)} · tested up to ${esc(wp.tested)}${wp.wp_latest ? ` (WordPress ${esc(wp.wp_latest)})` : ''}` : ''}</div>${spark(ser('wp_installs'))}</div>
+        <div class="kpi"><div class="lbl">WordPress.org downloads, 7 days</div><b>${wp ? num(wp.downloads_7d) : '—'}</b><div class="sub">${wp ? `${num(wp.downloaded)} all time` : ''}</div>${spark(((wp || {}).downloads_daily || []).map(([, n]) => n))}</div>
+        <div class="kpi"><div class="lbl">WordPress.org ratings</div><b>${wp ? num(wp.num_ratings) : '—'}</b><div class="sub">${wp && wp.num_ratings ? `${(wp.rating / 20).toFixed(1)} stars · ` : ''}${wp ? `${num(wp.support_resolved)}/${num(wp.support_threads)} support threads resolved` : ''}</div>${spark(ser('wp_ratings'))}</div>
+        <div class="kpi"><div class="lbl">Shopify reviews</div><b>${sh ? num(sh.reviews) : '—'}</b><div class="sub">${sh ? `${sh.rating ? `${sh.rating} stars · ` : ''}${esc(sh.title.split(' | ')[0])}` : 'Not checked (no shopify.handle in the site file, or Shopify refused the visit).'}</div>${sh ? spark(ser('shopify_reviews')) : ''}</div>
+      </div>
+      <div class="card"><h2>Position in WordPress.org search</h2><p class="lead">The first 200 results (100 a page), from WordPress.org's public API. A dash means further down. Shopify App Store positions aren't checked here: Shopify's robots.txt disallows search for crawlers, so check those by hand.</p>
+        <div class="scroll"><table><thead><tr><th>Keyword</th><th class="num">Position</th><th class="num">Plugins matching</th></tr></thead><tbody>
+        ${((wp || {}).ranks || []).map((r) => `<tr><td>${esc(r.keyword)}</td><td class="num">${pos(r.position)}</td><td class="num">${num(r.results)}</td></tr>`).join('') || '<tr><td colspan="3" class="muted">Not checked yet.</td></tr>'}
+        </tbody></table></div></div>
+      ${sh ? `<div class="card"><h2>Shopify listing text</h2>${(sh.drift || []).length ? `<p class="lead">Still on the live listing (replace it in the Shopify Partner Dashboard):</p>${list(sh.drift.map((d) => '“' + d + '”'))}` : '<p><span class="chip ok">clean</span> none of the watched phrases is on the listing.</p>'}</div>` : ''}
+      ${(st.errors || []).length ? `<div class="card"><h2>Store check errors</h2>${list(st.errors)}</div>` : ''}
+      <p class="muted small">Checked ${when(st._at)}</p>`;
+  }
+
+  function viewSite() {
+    const c = S.crawl || {}, aeo = c.aeo || {};
+    const pages = (PAGES || []).filter((p) => pageFilter === 'all' || p.issues.length);
+    const bar = (label, v) => `<div class="barrow"><span>${label}</span><div class="meter"><i style="width:${Math.max(0, Math.min(100, v || 0))}%"></i></div><span class="num">${num(v)}%</span></div>`;
+    return `
+      <div class="intro"><h1>Site health</h1><p>Today's crawl of ${esc(S.name)}'s sitemap: technical SEO basics, the AEO signals answer engines lift, and the issues to fix. Pages are read without running JavaScript, the way most AI crawlers read them.</p></div>
+      <div class="grid4">
+        <div class="kpi"><div class="lbl">Pages crawled</div><b>${num(c.pages)}</b><div class="sub">${num(c.ok)} returned 200</div></div>
+        <div class="kpi"><div class="lbl">Pages without errors</div><b>${num(c.health)}%</b><div class="sub">${num(c.errors)} errors · ${num(c.warnings)} warnings</div></div>
+        <div class="kpi"><div class="lbl">Median download</div><b>${num(c.median_ms)} ms</b><div class="sub">HTML only, from the server</div></div>
+        <div class="kpi"><div class="lbl">Sitemap</div><b>${S.sitemap ? num(c.pages) : 'none'}</b><div class="sub">${S.sitemap ? 'pages crawled from ' + esc(path(S.sitemap)) : 'crawled the homepage and its links instead'}</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>AEO coverage</h2><p class="lead">Share of pages with each answer-engine signal.</p><div class="bars">
+          ${bar('Question headings', aeo.with_questions)}${bar('Answer-first paragraph', aeo.answer_first)}${bar('FAQPage schema', aeo.faq_schema)}${bar('Tables', aeo.with_tables)}</div></div>
+        <div class="card"><h2>Issues by type</h2>${Object.keys(c.issues_by_code || {}).length ? `<table><tbody>${Object.entries(c.issues_by_code).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${num(v)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted small">No issues.</p>'}</div>
+      </div>
+      <div class="card"><h2>Pages</h2>
+        <div class="seg" id="pageSeg"><button type="button" data-pf="issues" aria-pressed="${pageFilter === 'issues'}">With issues</button><button type="button" data-pf="all" aria-pressed="${pageFilter === 'all'}">All</button></div>
+        <div class="scroll"><table><thead><tr><th>Page</th><th class="num">Status</th><th class="num">Words</th><th class="num">Q&amp;A</th><th>Issues</th></tr></thead><tbody>
+        ${pages.map((p) => `<tr><td class="small">${link(p.url)}<div class="muted">${esc(p.title)}</div></td><td class="num">${esc(p.status)}</td><td class="num">${num(p.words)}</td>
+          <td class="num">${num((p.aeo || {}).question_headings)}/${num((p.aeo || {}).answer_first)}</td>
+          <td class="small">${p.issues.map((i) => `<div><span class="chip ${i.level === 'error' ? 'err' : 'warn'}">${esc(i.code)}</span> ${esc(i.text)}</div>`).join('') || '<span class="chip ok">clean</span>'}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">No pages.</td></tr>'}
+        </tbody></table></div></div>`;
+  }
+
+  function viewActions() {
+    const items = (ACTIONS || []).filter((a) => actionFilter === 'all' || a.status === actionFilter);
+    const counts = S.action_counts || {};
+    const btn = (k, l) => `<button type="button" data-af="${k}" aria-pressed="${actionFilter === k}">${l} <span class="muted">${k === 'all' ? Object.values(counts).reduce((a, b) => a + b, 0) : (counts[k] || 0)}</span></button>`;
+    return `<div class="intro"><h1>Actions</h1><p>Everything the agent has suggested. One suggested again updates its row instead of piling up; a dismissed one stays dismissed.</p></div>
+      <div class="seg" id="actSeg">${btn('open', 'Open')}${btn('done', 'Done')}${btn('dismissed', 'Dismissed')}${btn('all', 'All')}</div>
+      ${items.length ? actionCards(items) : '<div class="empty">Nothing here.</div>'}`;
+  }
+
+  function viewRuns() {
+    return `<div class="intro"><h1>Runs: ${esc(S.name)}</h1><p>Each run checks every site one after another; schedule <code>seodesk run</code> with cron, a systemd timer or GitHub Actions. Spend this month on ${esc(S.name)}: <b>$${Number(S.month_spend).toFixed(2)}</b> of $${Number(S.monthly_cap).toFixed(2)}; every site: <b>$${Number(S.total_spend).toFixed(2)}</b> of $${Number(S.total_cap).toFixed(2)}.</p></div>
+      <div class="card"><div class="scroll"><table><thead><tr><th>#</th><th>Started</th><th>Kind</th><th>Status</th><th class="num">Pages</th><th class="num">Searches</th><th class="num">Brief $</th><th>Note</th></tr></thead><tbody>
+      ${(S.runs || []).map((r) => `<tr><td>${r.id}</td><td class="small">${when(r.started_at)}</td><td>${esc(r.kind)}</td><td><span class="chip ${r.status === 'ok' ? 'ok' : r.status === 'running' ? '' : r.status === 'partial' ? 'warn' : 'err'}">${esc(r.status)}</span></td>
+        <td class="num">${num(r.pages)}</td><td class="num">${num(r.serper_calls)}</td><td class="num">${Number(r.llm_usd || 0).toFixed(3)}</td><td class="small">${esc(r.note)}</td></tr>`).join('') || '<tr><td colspan="8" class="muted">No runs yet.</td></tr>'}
+      </tbody></table></div></div>
+      <div class="card"><h2>Latest run log</h2><pre class="log" id="log">…</pre></div>
+      ${(S.briefs || []).length ? `<div class="card"><h2>Past briefs</h2><table><tbody>${S.briefs.map((b) => `<tr><td class="small">${when(b.created_at)}</td><td>${esc(b.headline)}</td></tr>`).join('')}</tbody></table></div>` : ''}`;
+  }
+
+  const VIEWS = { all: viewAll, today: viewToday, progress: viewProgress, search: viewSearch, ai: viewAI, stores: viewStores, site: viewSite, actions: viewActions, runs: viewRuns };
+
+  async function render() {
+    const view = (location.hash || '#today').slice(1);
+    const v = VIEWS[view] && !(view === 'stores' && !S.has_stores) ? view : 'today';
+    document.querySelectorAll('#tabs a').forEach((a) => a.setAttribute('aria-current', a.getAttribute('href') === '#' + v ? 'page' : 'false'));
+    document.getElementById('storesTab').hidden = !S.has_stores;
+    const pick = document.getElementById('sitePick');
+    pick.innerHTML = (S.sites || []).map((x) => `<option value="${esc(x.slug)}"${x.slug === S.slug ? ' selected' : ''}>${esc(x.name)}</option>`).join('');
+    pick.hidden = v === 'all';
+    document.title = v === 'all' ? 'SEO Desk' : `${S.name} · SEO Desk`;
+    if (v === 'all' && !OVERVIEW) OVERVIEW = await api('/api/overview');
+    if (v === 'site' && !PAGES) PAGES = await api('/api/pages');
+    if ((v === 'actions' || v === 'today') && !ACTIONS) ACTIONS = await api('/api/actions');
+    const working = S.running ? '<div class="working"><span class="dot"></span>A run is going. This page refreshes when it finishes.</div>' : '';
+    const runBtn = document.getElementById('runBtn');
+    runBtn.textContent = v === 'all' ? 'Run all' : 'Run now';
+    runBtn.title = v === 'all' ? 'Check every site now' : `Check ${S.name} now`;
+    app.innerHTML = working + VIEWS[v]();
+    document.getElementById('runBtn').disabled = !!S.running;
+    if (v === 'runs') loadLog();
+  }
+
+  async function loadLog() {
+    const r = await api('/api/log');
+    const el = document.getElementById('log');
+    if (el) el.textContent = r.log || 'No run log yet.';
+  }
+
+  async function refresh() {
+    S = await api('/api/summary');
+    SITE = S.slug;
+    store.set('seoDeskSite', SITE);
+    PAGES = ACTIONS = OVERVIEW = null;
+    await render();
+    clearInterval(poll);
+    if (S.running) poll = setInterval(async () => {
+      const r = await api('/api/log');
+      const el = document.getElementById('log');
+      if (el) el.textContent = r.log || '';
+      if (!r.running) { clearInterval(poll); refresh(); }
+    }, 5000);
+  }
+
+  app.addEventListener('click', async (e) => {
+    const row = e.target.closest('tr.site-row');
+    if (row && !e.target.closest('a')) { switchSite(row.dataset.site, '#progress'); return; }
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.act) {
+      t.disabled = true;
+      await api('/api/action', { id: Number(t.dataset.act), status: t.dataset.st });
+      ACTIONS = await api('/api/actions');
+      S.action_counts = {}; (ACTIONS || []).forEach((a) => { S.action_counts[a.status] = (S.action_counts[a.status] || 0) + 1; });
+      render();
+    } else if (t.dataset.af) { actionFilter = t.dataset.af; render(); }
+    else if (t.dataset.pf) { pageFilter = t.dataset.pf; render(); }
+  });
+  function switchSite(slug, hash) {
+    SITE = slug;
+    const u = new URL(location.href);
+    u.searchParams.set('site', slug);
+    u.hash = hash || location.hash;
+    history.replaceState(null, '', u);
+    refresh().catch((err) => { app.innerHTML = `<div class="empty">Couldn't load the dashboard: ${esc(err.message)}</div>`; });
+  }
+  document.getElementById('sitePick').addEventListener('change', (e) => switchSite(e.target.value));
+  document.getElementById('runBtn').addEventListener('click', async (e) => {
+    e.target.disabled = true;
+    const all = (location.hash || '').slice(1) === 'all';
+    if (all && !confirm('Run every site now? It takes a few minutes per site.')) { e.target.disabled = false; return; }
+    const r = await api('/api/run', all ? { site: '*' } : {});
+    if (!r.ok) alert(r.error || 'Couldn’t start a run.');
+    setTimeout(refresh, 1500);
+  });
+  window.addEventListener('hashchange', render);
+  refresh().catch((err) => { app.innerHTML = `<div class="empty">Couldn't load the dashboard: ${esc(err.message)}</div>`; });
+})();
+</script>
+</body>
+</html>

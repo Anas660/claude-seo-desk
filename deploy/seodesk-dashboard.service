@@ -1,0 +1,20 @@
+# The dashboard on 127.0.0.1:5380. Set a password first (`seodesk --home /opt/seodesk password`), and put an HTTPS
+# reverse proxy (Caddy, nginx) in front of it to reach it from elsewhere.
+[Unit]
+Description=SEO Desk dashboard (127.0.0.1:5380)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=seodesk
+WorkingDirectory=/opt/seodesk
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/seodesk/.venv/bin/seodesk --home /opt/seodesk dashboard --host 127.0.0.1 --port 5380
+Restart=always
+RestartSec=5
+# "Run now" starts the run as a child process; keep it running if the dashboard restarts
+KillMode=process
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

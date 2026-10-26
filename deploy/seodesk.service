@@ -1,0 +1,17 @@
+# The daily run, started by seodesk.timer. Install: copy both files to /etc/systemd/system/, adjust User and the
+# paths, then `systemctl daemon-reload && systemctl enable --now seodesk.timer`.
+[Unit]
+Description=SEO Desk: daily SEO / AEO / GEO check of every site in config.yaml
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=seodesk
+WorkingDirectory=/opt/seodesk
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/seodesk/.venv/bin/seodesk --home /opt/seodesk run
+# per site: crawl ~2 minutes, rank checks ~1, AI visibility and the brief 1-3; sites run one after another
+TimeoutStartSec=4h
+Nice=10
+NoNewPrivileges=true

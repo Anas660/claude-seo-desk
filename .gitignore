@@ -1,0 +1,17 @@
+# your keys and your data, when you run seodesk in this folder
+/.env
+/data/
+/logs/
+/config.yaml
+/sites/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+.DS_Store

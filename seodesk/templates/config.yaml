@@ -1,0 +1,43 @@
+# SEO Desk: what every site shares (the model, the money, the AI crawler list, DataForSEO), and which sites it checks.
+# Each site's own settings (address, keyword plan, claims, what it is) are in sites/<name>.yaml.
+
+# Checked in this order by `seodesk run`; the first is the dashboard's default. Each name is a file in sites/.
+sites: [example]
+
+llm:
+  # Any OpenAI-compatible chat API. The default, OpenRouter, takes one key (LLM_API_KEY in .env) for hundreds of
+  # models. For OpenAI use https://api.openai.com/v1; for a local Ollama, http://localhost:11434/v1.
+  base_url: https://openrouter.ai/api/v1
+  # DeepSeek V4.1 Flash through OpenRouter: about $0.15 in / $0.60 out per million tokens, a cent or so a brief.
+  model: deepseek/deepseek-v4.1-flash
+  effort: medium
+  # Page reads and live Google checks the analyst may make while writing each site's brief.
+  max_tool_calls: 10
+
+limits:
+  # One site's run (brief + AI visibility + Serper + DataForSEO).
+  max_run_usd: 1.00
+  # Every site together, a month.
+  max_monthly_usd: 30.00
+  # One site, a month, unless its file sets limits.max_monthly_usd.
+  site_monthly_usd: 4.00
+  # Serper searches per site run: up to 2 per keyword (page 2 only when not on page 1) + the analyst's own checks.
+  max_serper_per_run: 60
+
+crawl:
+  max_pages: 150
+  concurrency: 4
+  timeout_s: 20
+  # user_agent: "MyCompanyBot/1.0 (+https://example.com/bot)"   # default: SEODesk/<version> (+project URL)
+  # respect_robots: false   # crawl pages robots.txt disallows for SEODesk (only for sites you run)
+
+# DataForSEO (optional, once DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD are in .env): real search volumes for each
+# site's keyword plan, and the keywords Google ranks each site for.
+dataforseo:
+  volume_every_days: 28    # or sooner when the keyword plan changes
+  ranked_every_days: 7
+  ranked_limit: 100        # keywords listed (the totals count them all)
+  max_calls_per_run: 6
+
+# AI crawlers that should be allowed to read the site (GEO).
+ai_crawlers: [GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot, Google-Extended, Applebot-Extended, CCBot]

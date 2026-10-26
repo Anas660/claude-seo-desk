@@ -1,0 +1,23 @@
+name: Feature or check idea
+description: A check, an integration or a change to the scores
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you're trying to find out or fix
+      description: The question about your site SEO Desk can't answer today
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What SEO Desk could do
+      description: The check, where its data would come from, and how it should show up (report, score, dashboard, MCP tool)
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Documentation or research that backs the check (Google Search Central, crawler docs, llmstxt.org...)

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "seo-desk",
+  "owner": {
+    "name": "Syed Anas",
+    "url": "https://github.com/Anas660"
+  },
+  "metadata": {
+    "description": "SEO Desk: SEO, AEO and GEO audits for the AI search era, as a Claude Code plugin and MCP server."
+  },
+  "plugins": [
+    {
+      "name": "seo-desk",
+      "source": "./",
+      "description": "Is your site ready for AI search? Audits SEO, AEO and GEO (AI crawler access, llms.txt, answer-ready pages, structured data), drafts llms.txt and fixes what it finds in your codebase.",
+      "author": {
+        "name": "Syed Anas",
+        "url": "https://github.com/Anas660"
+      },
+      "category": "marketing",
+      "homepage": "https://github.com/Anas660/claude-seo-desk",
+      "keywords": ["seo", "aeo", "geo", "ai-search", "llms-txt", "ai-crawlers", "seo-audit", "mcp"]
+    }
+  ]
+}

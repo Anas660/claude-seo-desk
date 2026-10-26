@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests (Python ${{ matrix.python }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        include:
+          - os: macos-latest
+            python: "3.12"
+          - os: windows-latest
+            python: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
+
+  action:
+    name: The GitHub Action audits a site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # A tiny site served on this runner, so CI never crawls anyone else's.
+      - name: Serve a test site
+        run: |
+          mkdir -p /tmp/site
+          printf '<!doctype html><html><head><title>SEO Desk test site</title><meta name="description" content="A tiny page the SEO Desk CI audits on every push, so the Action is tested without crawling anyone else."></head><body><main><h1>Test site</h1><p>Hello.</p></main></body></html>' > /tmp/site/index.html
+          printf 'User-agent: *\nAllow: /\n' > /tmp/site/robots.txt
+          printf '<urlset><url><loc>http://127.0.0.1:8000/</loc></url></urlset>' > /tmp/site/sitemap.xml
+          python3 -m http.server 8000 --bind 127.0.0.1 --directory /tmp/site > /dev/null 2>&1 &
+          sleep 1
+      - id: seo
+        uses: ./
+        with:
+          url: http://127.0.0.1:8000
+          max-pages: "5"
+      - name: The scores came out
+        shell: bash
+        env:
+          OVERALL: ${{ steps.seo.outputs.overall }}
+        run: test -n "$OVERALL" && echo "overall $OVERALL"

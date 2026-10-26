@@ -1,0 +1,66 @@
+# One site. Copy this file to sites/<name>.yaml for each site, and list <name> under `sites:` in config.yaml.
+# Only `site` is required; everything else makes the checks and the brief sharper.
+
+name: Example
+# The canonical origin: scheme and host, no path. `seodesk check` warns when the homepage redirects elsewhere.
+site: https://www.example.com
+# Main market (2-letter country) and language: rank checks and DataForSEO use them.
+country: us
+language: en
+
+# What the site is and where it's going, for the AI analyst that writes the brief.
+about: >-
+  Example sells invoicing software for freelancers (Free, Pro $12/month, Team $29/month). The direction: win the
+  "invoice template" and "freelance invoicing" keywords first, then link them up to the homepage.
+
+# What the brief must never suggest or claim (things that aren't true, or aren't allowed).
+rules: >-
+  SOC 2, HIPAA, a mobile app, or any metric nobody measured.
+
+# Search queries and AI answers containing any of these count as branded (people who already know the site).
+brand_terms: [example, example app]
+
+crawl:
+  max_pages: 150
+  # Pages that are thin on purpose (legal, auth): no "thin content" warning, and left out of the AEO score.
+  thin_ok: [/privacy, /terms, /login, /signup]
+  # sitemaps: [/sitemap-pages.xml]   # read only these, when the sitemap index is mostly pages not worth a daily crawl
+
+# limits:
+#   max_monthly_usd: 10.00          # this site's own monthly cap
+
+# The keyword plan, checked every run through Serper (SERPER_API_KEY in .env).
+# tier: easy (a weak first page), medium (needs links), head (the long-term targets). `target` is the page meant to rank.
+keywords:
+  - {keyword: free invoice template, tier: easy, target: /templates/invoice}
+  - {keyword: freelance invoicing software, tier: medium, target: /}
+  - {keyword: invoicing software, tier: head, target: /}
+  # - {keyword: invoice generator, country: gb, tier: medium, target: /generator}   # another market
+
+# Claims that must never appear on the live site (pages and llms.txt), or in what AI models say about it.
+# about_us: only a sentence about the site counts (names it, or says we/our), so advice like "insist on SOC 2" is fine.
+# unless: a sentence that also matches this is skipped (an honest "we have no SOC 2 report").
+claims:
+  - {id: soc2, pattern: '\bSOC[\s-]?2\b', about_us: true, unless: '\bno\b|\bnot\b|without', why: there is no SOC 2 report}
+  - {id: mobile-app, pattern: '(?:iOS|Android|mobile) app', about_us: true, unless: '\bno\b|\bnot\b|coming', why: there is no mobile app yet}
+
+# AI visibility (needs LLM_API_KEY): ask AI models what your customers ask, and record whether the answers name the
+# site, link to it, which sites they cite instead, and whether they repeat a claim from the list above.
+# Model names are OpenRouter's (see openrouter.ai/models); ":online" adds web search to any model.
+# ai_visibility:
+#   models: [perplexity/sonar, openai/gpt-5-mini:online]
+#   prompts:
+#     - best invoicing software for freelancers
+#     - how do I make an invoice as a freelancer
+#     - {prompt: "What is Example invoicing?", branded: true}
+#   every_days: 7
+#   max_calls: 20
+
+# App-store listings, for a site that also has a WordPress.org plugin or a Shopify app.
+# stores:
+#   wordpress:
+#     slug: my-plugin
+#     keywords: [invoice, invoicing]
+#   shopify:
+#     handle: my-app
+#     must_not_contain: ["old tagline"]

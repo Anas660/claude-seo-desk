@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seo-desk": {
+      "command": "uvx",
+      "args": ["--quiet", "--python", ">=3.10", "--from", "seo-desk[mcp] @ ${CLAUDE_PLUGIN_ROOT}", "seodesk", "mcp"]
+    }
+  }
+}

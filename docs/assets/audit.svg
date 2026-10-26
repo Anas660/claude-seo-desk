@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="918" height="848" viewBox="0 0 918 848" role="img" aria-label="uvx seo-desk audit example.com">
+  <rect width="918" height="848" rx="12" fill="#0d1117"/>
+  <rect width="918" height="34" rx="12" fill="#161b22"/><rect y="22" width="918" height="12" fill="#161b22"/>
+  <circle cx="22" cy="17" r="6" fill="#ff5f57"/><circle cx="42" cy="17" r="6" fill="#febc2e"/><circle cx="62" cy="17" r="6" fill="#28c840"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="14" fill="#c9d1d9">
+    <text x="22" y="66"><tspan fill="#7ee787">$</tspan> uvx seo-desk audit example.com</text>
+    <text x="22" y="86" xml:space="preserve" font-weight="700">SEO Desk audit: https://example.com (2026-10-26)</text>
+    <text x="22" y="106" xml:space="preserve">Crawled 1 page from the homepage and its links (no sitemap found)</text>
+    <text x="22" y="126" xml:space="preserve"></text>
+    <text x="22" y="146" xml:space="preserve">  <tspan fill="#79c0ff">Overall 34</tspan>    <tspan fill="#79c0ff">SEO 60</tspan>    <tspan fill="#79c0ff">AEO 0</tspan>    <tspan fill="#79c0ff">GEO 42</tspan></text>
+    <text x="22" y="166" xml:space="preserve"></text>
+    <text x="22" y="186" xml:space="preserve">  <tspan fill="#79c0ff">SEO  60</tspan>  pages without errors 100 · clean on-page tags 0</text>
+    <text x="22" y="206" xml:space="preserve">  <tspan fill="#79c0ff">AEO   0</tspan>  question headings 0 · answer-first 0 · FAQ schema 0 · tables or lists 0</text>
+    <text x="22" y="226" xml:space="preserve">  <tspan fill="#79c0ff">GEO  42</tspan>  AI crawlers allowed 100 · llms files 0 · structured data 0</text>
+    <text x="22" y="246" xml:space="preserve">  (SEO is technical and on-page only. Add --keyword with SERPER_API_KEY set for Google rank checks.)</text>
+    <text x="22" y="266" xml:space="preserve"></text>
+    <text x="22" y="286" xml:space="preserve" font-weight="700">AI crawlers</text>
+    <text x="22" y="306" xml:space="preserve">  allowed: GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot,</text>
+    <text x="22" y="326" xml:space="preserve">    Google-Extended, Applebot-Extended, CCBot</text>
+    <text x="22" y="346" xml:space="preserve">  /llms.txt <tspan fill="#ff7b72">MISSING</tspan> (404)    /llms-full.txt <tspan fill="#ff7b72">MISSING</tspan> (404)</text>
+    <text x="22" y="366" xml:space="preserve"></text>
+    <text x="22" y="386" xml:space="preserve" font-weight="700">Quick wins</text>
+    <text x="22" y="406" xml:space="preserve">  1. Publish a sitemap (/sitemap.xml) and name it in robots.txt (`Sitemap: https://.../sitemap.xml`):</text>
+    <text x="22" y="426" xml:space="preserve">     search engines and this audit found pages only through links.</text>
+    <text x="22" y="446" xml:space="preserve">  2. Add /llms.txt: a short Markdown map of the site for AI assistants (see https://llmstxt.org).</text>
+    <text x="22" y="466" xml:space="preserve">  3. No pages carry structured data: add JSON-LD (Organization on the home page, Article on posts,</text>
+    <text x="22" y="486" xml:space="preserve">     Product or SoftwareApplication on product pages).</text>
+    <text x="22" y="506" xml:space="preserve">  4. No content pages have question headings: phrase some H2s as the questions people ask (What is...,</text>
+    <text x="22" y="526" xml:space="preserve">     How do I...).</text>
+    <text x="22" y="546" xml:space="preserve">  5. No content pages open a question heading with a direct answer: put a 25-90 word answer straight</text>
+    <text x="22" y="566" xml:space="preserve">     under each question heading, the passage answer engines quote.</text>
+    <text x="22" y="586" xml:space="preserve">  6. Write a meta description (70-160 characters) for each page without one (1 page, e.g. /).</text>
+    <text x="22" y="606" xml:space="preserve">  7. Give each page one &lt;h1&gt; that says what it&#x27;s about (1 page, e.g. /).</text>
+    <text x="22" y="626" xml:space="preserve">  8. Add a canonical link to each page (1 page, e.g. /).</text>
+    <text x="22" y="646" xml:space="preserve"></text>
+    <text x="22" y="666" xml:space="preserve" font-weight="700">Issues</text>
+    <text x="22" y="686" xml:space="preserve">     1  warn   pages without a meta description  e.g. /</text>
+    <text x="22" y="706" xml:space="preserve">     1  warn   pages without a canonical link  e.g. /</text>
+    <text x="22" y="726" xml:space="preserve">     1  warn   pages without an &lt;h1&gt;  e.g. /</text>
+    <text x="22" y="746" xml:space="preserve">     1  warn   pages under 300 words  e.g. /</text>
+    <text x="22" y="766" xml:space="preserve"></text>
+    <text x="22" y="786" xml:space="preserve" font-weight="700">Notes</text>
+    <text x="22" y="806" xml:space="preserve">  - no sitemap found (robots.txt, /sitemap.xml, /sitemap-index.xml, /sitemap_index.xml); crawled the</text>
+    <text x="22" y="826" xml:space="preserve">    homepage and the pages it links to</text>
+  </g>
+</svg>

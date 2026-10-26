@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in · SEO Desk</title>
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+
+<style>
+  :root {
+    --bg: #F9FAFC; --surface: #FFFFFF; --surface-2: #F6F8FB; --line: #E7EBF1; --line-2: #D7DEE8;
+    --ink: #0D1220; --ink-2: #475165; --ink-3: #6B7488; --err: #D92D43;
+    --bloom-a: rgba(142, 220, 255, .55); --bloom-b: rgba(196, 181, 253, .5);
+    --fill: linear-gradient(160deg, #22D3EE 0%, #2563EB 100%);
+    --key: linear-gradient(100deg, #00B4D8 0%, #1E88E5 52%, #6D5DF2 100%);
+    --shadow: 0 1px 2px rgba(13,18,32,.05), 0 24px 48px -24px rgba(13,18,32,.25);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #080B12; --surface: #111827; --surface-2: #151D2E; --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.14);
+      --ink: #F3F5F9; --ink-2: #B4BCCB; --ink-3: #7F8A9E; --err: #FB7185;
+      --bloom-a: rgba(0, 180, 216, .22); --bloom-b: rgba(109, 93, 242, .22);
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 24px 48px -24px rgba(0,0,0,.7);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #080B12; --surface: #111827; --surface-2: #151D2E; --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.14);
+    --ink: #F3F5F9; --ink-2: #B4BCCB; --ink-3: #7F8A9E; --err: #FB7185;
+    --bloom-a: rgba(0, 180, 216, .22); --bloom-b: rgba(109, 93, 242, .22);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px;
+    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink);
+    background:
+      radial-gradient(600px 400px at 15% 10%, var(--bloom-a), transparent 70%),
+      radial-gradient(600px 400px at 90% 90%, var(--bloom-b), transparent 70%),
+      var(--bg);
+  }
+  .card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 32px 28px 28px; box-shadow: var(--shadow); }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 34px; height: 34px; }
+  .brand b { font: 700 22px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: -.02em; }
+  .brand span { font: 600 22px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: -.02em; background: var(--key); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p { color: var(--ink-2); margin: 14px 0 22px; }
+  label { display: block; font-size: 13px; color: var(--ink-3); margin-bottom: 6px; }
+  input { width: 100%; padding: 11px 12px; font: inherit; color: inherit; border: 1px solid var(--line-2); border-radius: 11px; background: var(--surface-2); }
+  input:focus { outline: 3px solid rgba(0, 180, 216, .25); border-color: #00B4D8; }
+  button { width: 100%; margin-top: 14px; padding: 11px; border: 0; border-radius: 11px; font: 600 15px ui-sans-serif, system-ui, sans-serif; color: #fff; background: var(--fill); cursor: pointer; }
+  button:disabled { opacity: .6; cursor: default; }
+  .err { color: var(--err); font-size: 13.5px; min-height: 20px; margin-top: 10px; }
+  .foot { text-align: center; color: var(--ink-3); font-size: 12.5px; margin-top: 18px; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><img src="/assets/logo.svg" alt=""><b>SEO</b><span>Desk</span></div>
+    <p>Sign in to your daily SEO, AEO and GEO checks.</p>
+    <form id="f">
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" autofocus required>
+      <button id="go">Sign in</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+    <div class="foot">Set or change the password with <code>seodesk password</code></div>
+  </main>
+<script>
+  document.getElementById('f').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const go = document.getElementById('go'), err = document.getElementById('err');
+    go.disabled = true; err.textContent = '';
+    try {
+      const r = await fetch('/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: document.getElementById('pw').value }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) return location.replace('/');
+      err.textContent = j.error || 'Could not sign in.';
+    } catch { err.textContent = 'Could not reach the server.'; }
+    go.disabled = false;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "seo-desk",
+  "version": "0.1.0",
+  "description": "SEO, AEO and GEO audits inside Claude Code: is the site ready for AI search? Checks AI crawler access (robots.txt, read the way the crawlers read it), llms.txt, answer-ready pages, structured data and on-page SEO, scores each 0-100, drafts llms.txt, then fixes what it found in your codebase. Bundles the SEO Desk MCP server.",
+  "author": {
+    "name": "Syed Anas",
+    "url": "https://github.com/Anas660"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Anas660/claude-seo-desk",
+  "repository": "https://github.com/Anas660/claude-seo-desk",
+  "keywords": [
+    "seo",
+    "aeo",
+    "geo",
+    "generative-engine-optimization",
+    "answer-engine-optimization",
+    "ai-search",
+    "llms-txt",
+    "ai-crawlers",
+    "robots-txt",
+    "structured-data",
+    "seo-audit",
+    "mcp"
+  ]
+}
