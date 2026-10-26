@@ -30,7 +30,7 @@
   <a href="https://github.com/Anas660/claude-seo-desk/actions/workflows/ci.yml"><img src="https://github.com/Anas660/claude-seo-desk/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://pypi.org/project/seo-desk/"><img src="https://img.shields.io/pypi/v/seo-desk?color=2563eb" alt="PyPI" /></a>
   <a href="https://pepy.tech/project/seo-desk"><img src="https://static.pepy.tech/badge/seo-desk/month" alt="Downloads a month" /></a>
-  <a href="https://pypi.org/project/seo-desk/"><img src="https://img.shields.io/pypi/pyversions/seo-desk" alt="Python versions" /></a>
+  <a href="https://pypi.org/project/seo-desk/"><img src="https://img.shields.io/badge/python-3.9%2B-3776ab" alt="Python 3.9+" /></a>
   <a href="#claude-code-plugin"><img src="https://img.shields.io/badge/Claude%20Code-plugin-D97757" alt="Claude Code plugin" /></a>
   <a href="#mcp-server"><img src="https://img.shields.io/badge/MCP-server-6D5DF2" alt="MCP server" /></a>
   <a href="https://github.com/Anas660/claude-seo-desk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22c55e" alt="MIT license" /></a>
