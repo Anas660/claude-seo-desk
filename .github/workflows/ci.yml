@@ -23,7 +23,7 @@ jobs:
           - os: windows-latest
             python: "3.12"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
@@ -34,7 +34,7 @@ jobs:
     name: The GitHub Action audits a site
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # A tiny site served on this runner, so CI never crawls anyone else's.
       - name: Serve a test site
         run: |
@@ -59,7 +59,7 @@ jobs:
     name: The Docker image builds and audits a site
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build the image
         if: hashFiles('Dockerfile') != ''
         run: docker build -t seo-desk:ci .
