@@ -54,3 +54,31 @@ jobs:
         env:
           OVERALL: ${{ steps.seo.outputs.overall }}
         run: test -n "$OVERALL" && echo "overall $OVERALL"
+
+  docker:
+    name: The Docker image builds and audits a site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the image
+        if: hashFiles('Dockerfile') != ''
+        run: docker build -t seo-desk:ci .
+      - name: The image runs the CLI and keeps its config in /data
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          docker run --rm seo-desk:ci --version
+          mkdir -p /tmp/home
+          docker run --rm -v /tmp/home:/data seo-desk:ci init
+          test -f /tmp/home/config.yaml && test -f /tmp/home/sites/example.yaml
+      # The same tiny local site as the Action job: CI never crawls anyone else's.
+      - name: The image audits a site
+        if: hashFiles('Dockerfile') != ''
+        run: |
+          mkdir -p /tmp/site
+          printf '<!doctype html><html><head><title>SEO Desk test site</title></head><body><main><h1>Test site</h1><p>Hello.</p></main></body></html>' > /tmp/site/index.html
+          printf 'User-agent: *\nAllow: /\n' > /tmp/site/robots.txt
+          printf '<urlset><url><loc>http://127.0.0.1:8000/</loc></url></urlset>' > /tmp/site/sitemap.xml
+          python3 -m http.server 8000 --bind 127.0.0.1 --directory /tmp/site > /dev/null 2>&1 &
+          sleep 1
+          docker run --rm --network host seo-desk:ci audit http://127.0.0.1:8000 --max-pages 3 --format json > /tmp/report.json
+          python3 -c "import json; r = json.load(open('/tmp/report.json')); print(r['scores']); assert r['scores']['overall'] is not None"
