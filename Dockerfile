@@ -5,7 +5,14 @@ WORKDIR /build
 COPY pyproject.toml README.md LICENSE ./
 COPY seodesk/ ./seodesk/
 
-RUN pip install --no-cache-dir --prefix=/install .
+RUN python -m pip install --no-cache-dir setuptools
+
+RUN python -m pip install \
+    --no-build-isolation \
+    --retries 3 \
+    --timeout 60 \
+    --no-cache-dir \
+    --prefix=/install .
 
 FROM python:3.12-slim
 

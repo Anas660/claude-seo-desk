@@ -216,27 +216,23 @@ month and for every site per month, and every cent is recorded and shown on the 
 
 ## Docker
 
-Run SEO Desk in Docker without installing Python on your host. The image uses a multi-stage build so build dependencies are not included in the final image.
-
-> **Terminal compatibility:** The multi-line examples use Bash syntax and work in Linux/macOS terminals and Git Bash on Windows, with the Windows-specific adjustments shown below. PowerShell and Command Prompt users may need different line-continuation and path syntax.
+Run SEO Desk in Docker without installing Python on your host. The multi-stage build keeps build dependencies out of the final image.
 
 ### Build the image
-
-Run this from the repository root:
 
 ```bash
 docker build -t seo-desk:local .
 ```
 
-### Run a one-off audit
-
-Auditing a site requires no configuration or API keys:
+### Run a One-off Audit
 
 ```bash
 docker run --rm seo-desk:local audit example.com
 ```
 
-Save a **Markdown** report to your current directory on Linux or macOS:
+### Save a Markdown report
+
+On Linux and macOS:
 
 ```bash
 docker run --rm \
@@ -245,7 +241,74 @@ docker run --rm \
   --format markdown --output /reports/report.md
 ```
 
-On Windows with Git Bash, MSYS may convert container paths such as `/reports/report.md` into Windows paths. Disable this conversion for the Docker command:
+### Run the daily agent
+
+Use a local directory for configuration and persistent data so you can edit files on your host:
+
+```bash
+mkdir -p seo-desk
+docker run --rm \
+  -v "$PWD/seo-desk:/data" \
+  seo-desk:local init
+```
+
+Edit `seo-desk/config.yaml` and the relevant files under `seo-desk/sites/`. Keep credentials in `seo-desk/.env` private.
+
+Check the configuration and run the agent:
+
+```bash
+docker run --rm -v "$PWD/seo-desk:/data" seo-desk:local check
+docker run --rm -v "$PWD/seo-desk:/data" seo-desk:local run
+```
+
+Schedule the run daily using your host's scheduler or cron.
+
+### Dashboard
+
+Set a password:
+
+```bash
+docker run --rm -it \
+  -v "$PWD/seo-desk:/data" \
+  seo-desk:local password
+```
+
+Start the dashboard:
+
+```bash
+docker run -d \
+  --name seo-desk \
+  -p 127.0.0.1:5380:5380 \
+  -v "$PWD/seo-desk:/data" \
+  seo-desk:local \
+  dashboard --host 0.0.0.0 --port 5380
+```
+
+Open `http://127.0.0.1:5380` and sign in with your configured password. The dashboard listens on `0.0.0.0` inside the container for Docker port forwarding, while the published host port is restricted to localhost.
+
+<details>
+<summary>Windows notes, configuration backup, and cleanup</summary>
+
+### Windows PowerShell
+
+The examples above use Bash syntax. In PowerShell, use `$PWD.Path` for the current directory and PowerShell's backtick for line continuation, or enter commands on one line. Docker Desktop must be running.
+
+For example, to initialize the local configuration directory:
+
+```powershell
+New-Item -ItemType Directory -Force -Path .\seo-desk | Out-Null
+docker run --rm -v "${PWD}\seo-desk:/data" seo-desk:local init
+```
+
+To generate a Markdown report in the current directory:
+
+```powershell
+docker run --rm -v "${PWD}:/reports" seo-desk:local audit example.com --format markdown --output /reports/report.md
+```
+
+### Windows Git Bash
+
+Git Bash may convert Linux container paths into Windows paths. Disable that conversion when generating reports:
 
 ```bash
 MSYS_NO_PATHCONV=1 docker run --rm \
@@ -254,22 +317,41 @@ MSYS_NO_PATHCONV=1 docker run --rm \
   --format markdown --output /reports/report.md
 ```
 
-Both commands save report.md in your current host directory.
+For local configuration:
 
-### Run the daily agent and dashboard
+```bash
+mkdir -p seo-desk
 
-Create a named volume to persist configuration, credentials, the SQLite database, and logs:
+MSYS_NO_PATHCONV=1 docker run --rm \
+  -v "$(pwd -W)/seo-desk:/data" \
+  seo-desk:local init
+```
+
+### Named-volume alternative
+
+If you prefer Docker-managed storage instead of a local directory:
 
 ```bash
 docker volume create seo-desk-data
 docker run --rm -v seo-desk-data:/data seo-desk:local init
 ```
 
-The configuration files are stored in the `seo-desk-data` volume, not in your repository directory. To edit them on your host, copy them out of the volume, make your changes, and copy them back. Alternatively, bind-mount a local configuration directory to `/data` and manage the files directly on your host.
+Use `-v seo-desk-data:/data` for subsequent commands that access this configuration
 
-Keep `.env` private because it may contain API keys and other credentials.
+To copy the volume's contents to a local directory on Linux/macOS:
 
-For example, to copy the configuration directory out of the volume into a local folder, first create the destination directory and then copy the files:
+```bash
+mkdir -p seo-desk-config
+
+docker run --rm \
+  -v seo-desk-data:/data \
+  -v "$PWD/seo-desk-config:/backup" \
+  --entrypoint sh \
+  seo-desk:local \
+  -c 'cp -a /data/. /backup/'
+```
+
+On Windows Git Bash:
 
 ```bash
 mkdir -p seo-desk-config
@@ -282,70 +364,23 @@ MSYS_NO_PATHCONV=1 docker run --rm \
   -c 'cp -a /data/. /backup/'
 ```
 
-Set a dashboard password:
+Review copied files carefully because .env may contain credentials. Never commit secrets.
 
-```bash
-docker run --rm -it \
-  -v seo-desk-data:/data \
-  seo-desk:local password
-```
-
-Start the dashboard:
-
-```bash
-docker run -d \
-  --name seo-desk \
-  -p 127.0.0.1:5380:5380 \
-  -v seo-desk-data:/data \
-  seo-desk:local \
-  dashboard --host 0.0.0.0 --port 5380
-```
-
-If a container named `seo-desk` already exists, stop and remove it before starting another container with that name:
+### Stop and remove the dashboard
 
 ```bash
 docker stop seo-desk
 docker rm seo-desk
 ```
 
-These commands remove the existing container, not the named volume or its data.
-
-Open `http://127.0.0.1:5380` and sign in with the **password** you configured.
-
-The dashboard must bind to `0.0.0.0` **inside the container** for Docker port forwarding to work. The example publishes the port only on the host's loopback interface, so it is not directly exposed to your network. For remote access, use an HTTPS reverse proxy and keep authentication enabled.
-
-### Run checks and the daily job
-
-After configuring your sites and credentials, check your setup:
-
-```bash
-docker run --rm \
-  -v seo-desk-data:/data \
-  seo-desk:local check
-```
-
-Run the daily agent:
-
-```bash
-docker run --rm \
-  -v seo-desk-data:/data \
-  seo-desk:local run
-```
-
-Schedule the run command with your host's task scheduler or cron to run it daily. The database and configuration persist in the named volume even when individual containers are removed.
-
-### Stop the dashboard
-
-```bash
-docker stop seo-desk
-docker rm seo-desk
-```
-
-The seo-desk-data volume remains intact. To permanently remove it after confirming you no longer need its contents, run:
+Removing the container does not remove the named volume. To permanently delete the volume and its contents when they are no longer needed:
 
 ```bash
 docker volume rm seo-desk-data
 ```
+
+Keep dashboard authentication enabled. For remote access, use an HTTPS reverse proxy.
+</details>
 
 ## The dashboard
 
