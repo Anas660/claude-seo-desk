@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:  # "Run workflow" on any branch, e.g. to check a contributor's branch merged with main
 
 permissions:
   contents: read
